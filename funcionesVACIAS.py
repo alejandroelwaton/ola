@@ -183,6 +183,7 @@ def Puntos(candidata):
     #devuelve el puntaje que le corresponde a candidata
 
     vocales= "aeiouAEIOU"
+    
     consonantes="bcdfghlmnñprstvBCDFGJHLMNÑPRSTV"
     con_dificiles="jkqwxyzJKQWXYZ"
 
