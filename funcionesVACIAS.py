@@ -5,69 +5,49 @@ import random
 import math
 
 
+##################################################
+############Funciones Auxiliares####################
+def esta(elem,lista):
+    for letra in lista:
+        if letra==elem:
+            return True
+#################################################
+
 def cargarListas(lista, listaIzq, listaMedio, listaDer, posicionesIzq , posicionesMedio, posicionesDer):           ##funciona por el momento
     #elige una palabra de la lista y la carga en las 3 listas
     # y les inventa una posicion para que aparezca en la columna correspondiente
 
-    ANCHO=600
-    ALTO=800
-    palabra_random= random.choice(lista)
+    ANCHO = 800
+    ALTO = 600
+    palabra_random = random.choice(lista)
 
-##    coordenadas = coordenadas
-##
-    global coordenadas
-    global pos_x
-    global pos_y
 
     for palabra in lista:
         if palabra == palabra_random:
          for letra in palabra:
 
-            pos_x= random.randrange(0,ANCHO)
+            coordenadas = [random.randrange(0,ANCHO-10),random.randrange(0,ALTO-70)]
 
-            pos_y = random.randrange(0,ALTO-70)
-
-            coordenadas = [pos_x,pos_y]
-            
-
-            if pos_x <= (ANCHO-400):
+            if coordenadas[0] <= ANCHO-550 and coordenadas[1] <= ALTO-100:
 
                 listaIzq.append (letra)
                 posicionesIzq.append (coordenadas)
-                return coordenadas
+
 
             else:
-                if pos_x <= (ANCHO-200):
+                if coordenadas[0] <= ANCHO-265 and coordenadas[1] <= ALTO-100:
 
                     listaMedio.append (letra)
                     posicionesMedio.append (coordenadas)
-                    return coordenadas
+
 
                 else:
-                    if pos_x <= (ANCHO):
+                    if coordenadas[0] <= ANCHO-1 and coordenadas[1] <= ALTO-100:
 
                         listaDer.append (letra)
                         posicionesDer.append (coordenadas)
-                        return coordenadas
 
 
-
-         return posicionesIzq, posicionesMedio, posicionesDer
-
-
-
-
-#pp
-
-##lista=["Argentina", "Uruguay", "Brasil"]
-##listaIzq=[]
-##listaMedio=[]
-##listaDer=[]
-##posicionesIzq=[]
-##posicionesMedio=[]
-##posicionesDer=[]
-##
-##print (cargarListas(lista, listaIzq, listaMedio, listaDer, posicionesIzq , posicionesMedio, posicionesDer))
 
 
 
@@ -85,89 +65,20 @@ def bajar(lista, posiciones):               ##falta agregar la funcion  cargarLi
         cont = cont + 1
                 
 
-   
-##        #------------------------------------------
-##    for letra in cargarLista(posicionesMedio):
-##
-##
-##            while coordenadas[1] < (ALTO-70):
-##
-##                 coordenadas[1] =coordenadas[1] + 10
-##
-##            return coordenadas
-##
-##        #-----------------------------------------
-##    for letra in cargarLista(posicionesDer):
-##
-##
-##            while coordenadas[1] < (ALTO-70):
-##
-##                 coordenadas[1] = coordenadas[1] + 10
-##
-##            return coordenadas
-
-
-
-#elimina las que tocan el suelo
-
-##    if coordenadas[1] >= (ALTO - 70):
-##
-##            listabasura.pop(coordenadas)
-##
-##            return listabasura
-##
-##
-##
-###recorre lista por lista para asignarle que baje por el eje y aumentadolo
-##    ANCHO=600
-##    ALTO=800
-##
-##    for elem in lista:
-##        for letra in elem:
-##
-##            posi_x = random.randrange(0,ANCHO)
-##            posi_y = 0
-##
-##            posiciones =[posi_x,posi_y]
-##
-##            while posiciones[1] < (ALTO-70):
-##
-##                 posiciones[1] = posiciones[1] + 10
-##
-##            return posiciones
-
-###elimina las que tocan el suelo
-##            if posiciones[1] >= (ALTO - 70):
-##
-##                listabasura.pop(coord)
-##
-##                return listabasura
-
-
-###pp
-##listabasura=[]
-##lista=["Argentina", "Brasil", "Bolivia"]
-##posiciones=[]
-##print (bajar(lista,posiciones))
-
 
 
 #-------------------------------------------------------------------------------
 def actualizar(lista, listaIzq, listaMedio, listaDer, posicionesIzq , posicionesMedio, posicionesDer):
     ## llama a otras funciones para bajar bajar las letras, eliminar las que tocan el piso y
     ## cargar nuevas letras a la pantalla (esto puede no hacerse todo el tiempo para que no se llene de letras la pantalla)
+
+    bajar(listaIzq, posicionesIzq)
+    bajar(listaMedio, posicionesMedio)
+    bajar(listaDer, posicionesDer)
+    cargarListas(lista, listaIzq, listaMedio, listaDer, posicionesIzq , posicionesMedio, posicionesDer)
     pass
-##    TIEMPO_MAX=4
-##    lista=lista
-##    posicion=[posicionesIzq,posicionesMedio,posicionesDer]
-##    bajarse=bajar(lista,posicion)
-##    if bajarse==True:
-##     tiempo=0
-##     while tiempo<TIEMPO_MAX:
-##        tiempo+=1
-##        if tiempo==TIEMPO_MAX:
-##         cargarListas=(lista,listaIzq,listaMedio,listaDer,posicionesIzq,posicionesMedio,posicionesDer)
-##         return cargarListas
+
+
 
 
 
@@ -183,22 +94,23 @@ def Puntos(candidata):
     #devuelve el puntaje que le corresponde a candidata
 
     vocales= "aeiouAEIOU"
-    
     consonantes="bcdfghlmnñprstvBCDFGJHLMNÑPRSTV"
     con_dificiles="jkqwxyzJKQWXYZ"
 
-    p=0
+    puntaje=0
 
     for letra in candidata:
         if letra in vocales:
-            p += 1
+            puntaje += 1
         else:
             if letra in consonantes:
-                p += 2
+                puntaje += 2
             else:
                 if letra in con_dificiles:
-                    p += 5
-    return p
+                    puntaje += 5
+
+    return puntaje
+    pass
 
 
 
@@ -212,6 +124,8 @@ def procesar(lista, candidata, listaIzq, listaMedio, listaDerecha):
 
     else:
         return 0
+    pass
+
 
 
 
@@ -219,12 +133,22 @@ def procesar(lista, candidata, listaIzq, listaMedio, listaDerecha):
 def esValida(lista, candidata, listaIzq, listaMedio, listaDerecha):           ##falta cambiar algo para que tome el puntaje
     #devuelve True si candidata cumple con los requisitos
     valida=False
+    for palabrasA in lista:
+       if palabrasA in candidata:
+        valida=True
+       else:
+          I=esta(candidata, listaIzq)
+          if I==True:
+            valida=True
+          M=esta(candidata, listaMedio)
+          if M==True:
+            valida=True
+          D=esta(candidata, listaDerecha)
+          if D==True:
+            valida=True
+    return valida
+    ##(Si candidata no esta en lista) Busco si candidata esta en las listasizq, media y derecha, si esto se cumple lista es valida
+    pass
 
-    archivo = open("nombre_lista.txt","r", encoding="utf-8")
-    nombre_lista=archivo.readlines()
-    archivo.close()
-    for elem in lista:
-        if elem in nombre_lista:
-            valida = True
 
 
